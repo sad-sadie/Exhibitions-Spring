@@ -1,4 +1,4 @@
-package com.my.exhibitions;
+package com.my.exhibitions.startup;
 
 import com.my.exhibitions.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
