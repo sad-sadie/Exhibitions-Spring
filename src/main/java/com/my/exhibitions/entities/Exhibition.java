@@ -48,7 +48,7 @@ public class Exhibition {
     private Date endDate;
 
     @Column(nullable = false)
-    @Min(value = 5, message = "Price should not be less than 5 grn")
+    @Min(value = 5, message = "Price should not be less than 5 UAH")
     private double price;
 
 

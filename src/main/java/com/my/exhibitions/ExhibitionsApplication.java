@@ -9,6 +9,6 @@ public class ExhibitionsApplication {
         SpringApplication.run(ExhibitionsApplication.class, args);
 
         //TODO: log4j, documentation, tests, front-end rework, read about Spring Resource Bundle
-        //TODO: review security, docker
+        //TODO: review security, docker, post to get
     }
 }

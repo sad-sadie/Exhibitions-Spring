@@ -2,6 +2,7 @@ package com.my.exhibitions.controllers;
 
 import com.my.exhibitions.entities.Hall;
 import com.my.exhibitions.services.HallService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,8 @@ import java.util.stream.IntStream;
 @Controller
 public class HallController {
 
+
+    private final static Logger LOGGER = Logger.getLogger(HallController.class);
     private final HallService hallService;
 
     @Autowired
@@ -29,12 +32,14 @@ public class HallController {
 
     @GetMapping("/addHall")
     public String getAddHall(Model model) {
+        LOGGER.info("Get -> /addHall");
         model.addAttribute("hall", new Hall());
         return "addHall";
     }
 
     @PostMapping("/addHall")
     public String addNewHall(@Valid @ModelAttribute("hall") Hall hall, BindingResult bindingResult) {
+        LOGGER.info("Post -> /addHall");
         boolean alreadyExists = hallService.existsByName(hall.getName());
         if(alreadyExists) {
             bindingResult.rejectValue(
@@ -44,6 +49,7 @@ public class HallController {
             );
         }
         if(bindingResult.hasErrors()) {
+            LOGGER.error("Error while adding new hall");
             return "addHall";
         }
         hallService.save(hall);
@@ -52,6 +58,7 @@ public class HallController {
 
     @GetMapping("/getHalls")
     public String getHalls(Model model, @RequestParam("pageNum") int pageNum) {
+        LOGGER.info("Get -> /getHalls");
         Page<Hall> page = hallService.getPage(pageNum - 1);
         model.addAttribute("halls", page.toList());
         model.addAttribute("currentPage", pageNum);

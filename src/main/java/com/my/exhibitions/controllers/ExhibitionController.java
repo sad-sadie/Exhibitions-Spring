@@ -4,6 +4,7 @@ import com.my.exhibitions.entities.Exhibition;
 import com.my.exhibitions.services.ExhibitionService;
 import com.my.exhibitions.services.HallService;
 import com.my.exhibitions.services.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,8 @@ import java.util.stream.IntStream;
 @Controller
 public class ExhibitionController {
 
+
+    private static final Logger LOGGER = Logger.getLogger(ExhibitionController.class);
     private final ExhibitionService exhibitionService;
     private final HallService hallService;
     private final UserService userService;
@@ -39,6 +42,7 @@ public class ExhibitionController {
 
     @GetMapping("/addExhibition")
     public String getAddExhibition(Model model) {
+        LOGGER.info("Get -> /addExhibition");
         model.addAttribute("exhibition", new Exhibition());
         model.addAttribute("halls", hallService.getAllHalls());
         return "addExhibition";
@@ -49,6 +53,7 @@ public class ExhibitionController {
                                    BindingResult bindingResult,
                                    @RequestParam(value = "chosenHalls", required = false) List<String> halls,
                                    Model model) {
+        LOGGER.info("Post -> /addExhibition");
         boolean alreadyExists = exhibitionService.existsByTheme(exhibition.getTheme());
         if(alreadyExists) {
             bindingResult.rejectValue(
@@ -61,6 +66,7 @@ public class ExhibitionController {
                 || exhibition.getStartDate().after(exhibition.getEndDate())
                 || halls == null) {
             model.addAttribute("halls", hallService.getAllHalls());
+            LOGGER.error("Error while adding exhibitions");
             return "addExhibition";
         }
         exhibitionService.save(exhibition, halls);
@@ -71,6 +77,7 @@ public class ExhibitionController {
     public String getExhibitions(Model model,
                                  @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
                                  @RequestParam(value = "sortType", required = false, defaultValue = "default") String sortType) {
+        LOGGER.info("Get -> /getExhibition");
         Page<Exhibition> page;
         if(sortType.equals("default")) {
             page = exhibitionService.getPage(pageNum - 1);
@@ -99,7 +106,7 @@ public class ExhibitionController {
     @PostMapping("/getExhibitions")
     public String buyTicket(@RequestParam(value = "exhibitionId", required = false) Optional<Long> exhibitionId,
                             @RequestParam(value = "canceledExhibitionId", required = false) Optional<Long> canceledExhibitionId) {
-
+        LOGGER.info("Post -> /addExhibition");
         exhibitionId.ifPresent(exhibitionService::addCustomer);
         canceledExhibitionId.ifPresent(exhibitionService::cancelExhibition);
 
@@ -108,6 +115,7 @@ public class ExhibitionController {
 
     @GetMapping("/getStats")
     public String getStats(Model model) {
+        LOGGER.info("Get -> /getStats");
         Map<Exhibition, Integer> stats = exhibitionService.getStats();
         model.addAttribute("stats", stats);
         return "getStats";
@@ -115,6 +123,7 @@ public class ExhibitionController {
 
     @GetMapping("/getStats/{theme}")
     public String getDetailedStats(Model model, @PathVariable String theme) {
+        LOGGER.info("Get -> /getStats{" + theme + "}");
         Exhibition exhibition = exhibitionService.findByTheme(theme);
         Map<String, Integer> detailedStats = exhibitionService.getDetailedStats(exhibition.getId());
         model.addAttribute("stats", detailedStats);
