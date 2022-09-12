@@ -44,7 +44,7 @@ public class ExhibitionController {
     public String getAddExhibition(Model model) {
         LOGGER.info("Get -> /addExhibition");
         model.addAttribute("exhibition", new Exhibition());
-        model.addAttribute("halls", hallService.getAllHalls());
+        model.addAttribute("halls", hallService.findAll());
         return "addExhibition";
     }
 
@@ -65,7 +65,7 @@ public class ExhibitionController {
         if(bindingResult.hasErrors()
                 || exhibition.getStartDate().after(exhibition.getEndDate())
                 || halls == null) {
-            model.addAttribute("halls", hallService.getAllHalls());
+            model.addAttribute("halls", hallService.findAll());
             LOGGER.error("Error while adding exhibitions");
             return "addExhibition";
         }

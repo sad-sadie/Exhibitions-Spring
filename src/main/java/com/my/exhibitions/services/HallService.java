@@ -28,7 +28,7 @@ public class HallService {
         hallRepository.save(hall);
     }
 
-    public List<Hall> getAllHalls() {
+    public List<Hall> findAll() {
         LOGGER.info("Getting all halls");
         return hallRepository.findAll();
     }
