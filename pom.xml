@@ -112,6 +112,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>exhibitions</finalName>
     </build>
 
 </project>

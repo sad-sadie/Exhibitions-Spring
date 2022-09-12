@@ -109,7 +109,7 @@ public class ExhibitionService {
     }
 
     public Map<String, Integer> getDetailedStats(long exhibitionId) {
-        LOGGER.info("Getting detailed stats for exhibition + " + exhibitionId);
+        LOGGER.info("Getting detailed stats for exhibition " + exhibitionId);
         Map<String, Integer> stats = new LinkedHashMap<>();
         List<User> users = userService.findAll();
         users.forEach(user -> stats.put(
