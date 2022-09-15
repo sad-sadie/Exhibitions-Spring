@@ -57,7 +57,8 @@ public class HallController {
     }
 
     @GetMapping("/getHalls")
-    public String getHalls(Model model, @RequestParam("pageNum") int pageNum) {
+    public String getHalls(Model model,
+                           @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum) {
         LOGGER.info("Get -> /getHalls");
         Page<Hall> page = hallService.getPage(pageNum - 1);
         model.addAttribute("halls", page.toList());

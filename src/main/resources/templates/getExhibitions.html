@@ -32,13 +32,13 @@
 
                         <th:block th:text="#{already-bought}">You have already bought</th:block> <th:block th:text="${exhService.getNumberOfTicketsBoughtForUserAtExhibition(user, exhibition)}">Tickets count</th:block> <th:block th:text="#{tickets-at}"> tickets at this exhibition</th:block>
 
-                        <form th:action="@{/getExhibitions}" th:method="POST">
+                        <form th:action="@{/getExhibitions}" th:method="GET">
                             <input type="hidden" name="exhibitionId"  th:value="${exhibition.id}">
                             <button type="submit" th:text="#{buy-ticket}">Buy ticket</button>
                         </form>
 
                         <div sec:authorize="hasAuthority('ADMIN')">
-                            <form th:action="@{/getExhibitions}" method="POST">
+                            <form th:action="@{/getExhibitions}" method="GET">
                                 <input type="hidden" name="canceledExhibitionId"  th:value="${exhibition.id}">
                                 <button type="submit" th:text="#{cancel-exhibition}">Cancel exhibition</button>
                             </form>

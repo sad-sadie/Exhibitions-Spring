@@ -76,8 +76,14 @@ public class ExhibitionController {
     @GetMapping("/getExhibitions")
     public String getExhibitions(Model model,
                                  @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
-                                 @RequestParam(value = "sortType", required = false, defaultValue = "default") String sortType) {
+                                 @RequestParam(value = "sortType", required = false, defaultValue = "default") String sortType,
+                                 @RequestParam(value = "exhibitionId", required = false) Optional<Long> exhibitionId,
+                                 @RequestParam(value = "canceledExhibitionId", required = false) Optional<Long> canceledExhibitionId) {
         LOGGER.info("Get -> /getExhibition");
+
+        exhibitionId.ifPresent(exhibitionService::addCustomer);
+        canceledExhibitionId.ifPresent(exhibitionService::cancelExhibition);
+
         Page<Exhibition> page;
         if(sortType.equals("default")) {
             page = exhibitionService.getPage(pageNum - 1);
@@ -101,16 +107,6 @@ public class ExhibitionController {
         model.addAttribute("exhService", exhibitionService);
 
         return "getExhibitions";
-    }
-
-    @PostMapping("/getExhibitions")
-    public String buyTicket(@RequestParam(value = "exhibitionId", required = false) Optional<Long> exhibitionId,
-                            @RequestParam(value = "canceledExhibitionId", required = false) Optional<Long> canceledExhibitionId) {
-        LOGGER.info("Post -> /addExhibition");
-        exhibitionId.ifPresent(exhibitionService::addCustomer);
-        canceledExhibitionId.ifPresent(exhibitionService::cancelExhibition);
-
-        return "redirect:/home";
     }
 
     @GetMapping("/getStats")

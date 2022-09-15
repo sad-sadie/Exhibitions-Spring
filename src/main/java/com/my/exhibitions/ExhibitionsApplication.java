@@ -7,6 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ExhibitionsApplication {
     public static void main(String[] args) {
         SpringApplication.run(ExhibitionsApplication.class, args);
-        //TODO: documentation, tests, front-end rework, review security, docker, post to get
+        //TODO: tests, front-end rework, review security, docker, post to get
     }
 }
